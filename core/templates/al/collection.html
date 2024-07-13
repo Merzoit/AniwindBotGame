@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+
+{% block title %}Коллекция карт{% endblock %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    body {
+        background: url("https://s3.timeweb.cloud/210a85b8-2790aa0e-77e8-4b85-92e6-2676c2ee4708/ui/collection.png") no-repeat center center fixed;
+        background-size: cover;
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .collection-container {
+        width: 100%;
+        max-width: 1200px;
+        height: 100vh;
+        border-radius: 10px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        overflow-y: auto;
+    }
+    .collection-container h2 {
+        text-align: center;
+        color: #ffdd57;
+        margin-bottom: 20px;
+        font-size: 2em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    .filter-container {
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+        color: #ffdd57;
+    }
+    .filter-container .form-control {
+        margin-bottom: 10px;
+        text-align: center;
+        background-color: #2c3e50;
+        color: white;
+        border: none;
+    }
+    .filterBtn {
+        width: 100%;
+        margin-bottom: 5px;
+        border: 1px solid white;
+        background-color: #ffdd57;
+        color: black;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    .filterBtn:hover {
+        background-color: #ffcc00;
+        transform: scale(1.05);
+    }
+    .card-table {
+        margin-top: 20px;
+        color: white;
+        border-collapse: collapse;
+        font-size: 12px;
+    }
+    .card-table th, .card-table td {
+        vertical-align: middle;
+        color: #ffdd57;
+        border: none;
+        padding: 12px 15px;
+        background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+    }
+    .card-table th {
+        background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+        color: #ffdd57;
+    }
+    .card-table img {
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+    .modal-content {
+        color: #ffdd57;
+        border-radius: 10px;
+        background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+    }
+    .modal-content .modal-header {
+        border-bottom: 1px solid #ffdd57;
+    }
+    .modal-content .modal-header h5 {
+        color: #ffdd57;
+    }
+    .modal-body img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+    .modal-body table {
+        margin-top: 20px;
+    }
+    .modal-body th, .modal-body td {
+        color: #ffdd57;;
+        border: none;
+        padding: 10px;
+        text-align: left;
+    }
+    .modal-body th {
+        width: 30%;
+    }
+    .messages {
+        position: fixed;
+        text-align: center;
+        z-index: 1050; /* Выше, чем большинство элементов на странице */
+        width: 100%;
+        top: 0;
+    }
+
+    .alert {
+        opacity: 0.9;
+        margin-bottom: 5px;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        transition: opacity 0.5s linear;
+    }
+
+    .success {
+        background-color: #d4edda;
+        color: #155724;
+        border-color: #c3e6cb;
+    }
+
+    .error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border-color: #f5c6cb;
+    }
+
+    .warning {
+        background-color: #fff3cd;
+        color: #856404;
+        border-color: #ffeeba;
+    }
+</style>
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div class="{% if message.tags %}alert {{ message.tags }}{% endif %}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+<div class="container-fluid collection-container">
+    <br>
+    <h2><i class="bi bi-stack"></i> Коллекция <i class="bi bi-stack"></i></h2>
+    <div class="filter-container">
+        <form id="filterForm" method="get">
+            <input type="text" class="form-control" name="name" id="nameFilter" placeholder="Поиск по имени карточки" value="{{ request.GET.name }}">
+            <select class="form-control" name="universe" id="universeFilter">
+                <option value="">Выберите вселенную</option>
+                {% for universe in universes %}
+                <option value="{{ universe.id }}" {% if request.GET.universe == universe.id %}selected{% endif %}>{{ universe.name }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-dark filterBtn">Применить фильтры</button>
+        </form>
+    </div>
+    <div class="text-center" style="color: #ffdd57;">
+        <i class="bi bi-heart-pulse-fill"></i><i> - здоровье карты</i><br>
+        <i class="bi bi-heart-arrow"></i><i> - атака карты</i>
+    </div>
+    <table class="table card-table">
+        <thead>
+            <tr>
+                <th></th>
+                <th></th>
+                <th><i class="bi bi-heart-pulse-fill"></i></th>
+                <th><i class="bi bi-heart-arrow"></i></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for card in cards %}
+            <tr data-bs-toggle="modal" data-bs-target="#modal{{ forloop.counter }}">
+                <td><img src="{{ card.card.url }}" alt="{{ card.card.name }}"></td>
+                <td>{{ card.card.name }}</td>
+                <td><b>{{ card.hp }}</b><br> ({{ card.card.hp_min }}-{{ card.card.hp_max }})</td>
+                <td><b>{{ card.str }}</b><br>  ({{ card.card.str_min }}-{{ card.card.str_max }})</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Модальные окна -->
+{% for card in cards %}
+<div class="modal fade" id="modal{{ forloop.counter }}" tabindex="-1" aria-labelledby="modalLabel{{ forloop.counter }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel{{ forloop.counter }}" style="text-align: center;">{{ card.card.name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="background-color: #ffdd57"></button>
+            </div>
+            <div class="modal-body">
+                <img src="{{ card.card.url }}" alt="{{ card.card.name }}">
+                <table class="table table-responsive table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Вселенная</th>
+                            <td>{{ card.card.universe }}</td>
+                        </tr>
+                        <tr>
+                            <th>Стихия</th>
+                            <td>{{ card.card.element }}</td>
+                        </tr>
+                        <tr>
+                            <th>Сезон выпуска</th>
+                            <td>{{ card.card.season }}</td>
+                        </tr>
+                        <tr>
+                            <th>Здоровье</th>
+                            <td>{{ card.hp }}</td>
+                        </tr>
+                        <tr>
+                            <th>Атака</th>
+                            <td>{{ card.str }}</td>
+                        </tr>
+                        <tr>
+                            <th>Способность</th>
+                            <td>{{ card.card.ability.name }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="text-center">{{ card.card.ability.description }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <form action="{% url 'card-sell' red='Коллекция' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="card" value="{{ card.id }}">
+                    <button type="submit" class="btn filterBtn">Продать</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

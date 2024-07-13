@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    body {
+        background: url("https://s3.timeweb.cloud/210a85b8-2790aa0e-77e8-4b85-92e6-2676c2ee4708/ui/inventory.png") no-repeat center center fixed;
+        background-size: cover;
+        height: auto;
+        overflow: hidden;
+    }
+    .container {
+        padding-top: 20px;
+        margin: auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-gap: 20px;
+        align-items: stretch;
+        height: 100vh;
+        overflow-y: auto;
+        border-radius: 10px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    }
+
+    .container h3 {
+        text-align: center;
+        color: #ffdd57;
+        margin-bottom: 20px;
+        font-size: 2em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    .container p {
+        text-align: center;
+        color: #ffdd57;
+        margin-bottom: 20px;
+    }
+
+    .inventory-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+        border: 1px solid #ffdd57;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        color: #ffdd57;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        text-align: center;
+    }
+
+    .inventory-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+    }
+
+    .inventory-item img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        object-position: bottom;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+
+    .inventory-item form {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .btn-primary {
+        width: 100%;
+        font-size: 16px;
+        padding: 10px;
+        background-color: #ffdd57;
+        border: none;
+        color: #1e1e1e;
+        font-weight: bold;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #ffcc00;
+        transform: scale(1.05);
+    }
+
+    .item-placeholder {
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        color: #6c757d;
+        background-color: #343a40;
+        border-radius: 8px;
+        width: 100%;
+    }
+    .messages {
+        position: fixed;
+        text-align: center;
+        z-index: 1050;
+        width: 100%;
+        top: 0;
+    }
+
+    .alert {
+        opacity: 0.9;
+        margin-bottom: 5px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        transition: opacity 0.5s linear;
+    }
+
+    .success {
+        background-color: #d4edda;
+        color: #155724;
+        border-color: #c3e6cb;
+    }
+
+    .error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border-color: #f5c6cb;
+    }
+
+    .warning {
+        background-color: #fff3cd;
+        color: #856404;
+        border-color: #ffeeba;
+    }
+
+</style>
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div class="{% if message.tags %}alert {{ message.tags }}{% endif %}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+<div class="container">
+    <div class="">
+        <h3><b><i class="bi bi-box"></i> Инвентарь <i class="bi bi-box"></i></h3></b>
+        <p>Инвентарь содержит 9 активных слотов. Каждый слот может иметь неограниченное количество предмета одного типа. </p>
+    </div>
+    {% for item in items %}
+    <div class="inventory-item">
+        {% if item %}
+            <img src="{{ item.item.url }}" alt="{{ item.name }}">
+            <i><b>{{ item.item.name }}</b></i><br>
+            <i>{{ item.item.description }}</i><br>
+            <i>Кол-во: <b>{{ item.count }}</b></i>
+            <i>Цена продажи: <b>{{ item.item.sell_price }}</b></i>
+            {% if item.item.type.name == 'Бокс' %}
+            <form action="{% url 'open_box' slot_id=item.id user_id=user.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Открыть бокс</button>
+            </form>
+            <form action="{% url 'item_sell' slot_id=item.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Продать</button>
+            </form>
+            {% elif item.item.type.name == 'Амулет' %}
+            <form action="{% url 'item_sell' slot_id=item.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Продать</button>
+            </form>
+            {% endif %}
+        {% else %}
+            <div class="item-placeholder">Пустой слот</div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        // Находим все элементы с классом alert
+        const alerts = document.querySelectorAll('.alert');
+        // Задаем таймер для каждого сообщения
+        alerts.forEach(function(alert) {
+            setTimeout(function() {
+                // Плавно уменьшаем прозрачность, затем удаляем элемент
+                alert.style.opacity = '0';
+                setTimeout(function() {
+                    alert.remove();
+                }, 600); // Синхронизируем это с transition в CSS
+            }, 5000); // Исчезновение сообщений через 5 секунд
+        });
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

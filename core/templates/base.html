@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Game App{% endblock %}</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Custom CSS -->
+    <style>
+        body {
+            color: white;
+        }
+        nav {
+            position: fixed;
+            color: white;
+            bottom: 0;
+            width: 100%;
+            border-top: 2px solid black;
+            transition: transform 0.3s ease;
+            z-index: 1060;
+            background-color: #ffdd57;
+        }
+        nav.hidden {
+            transform: translateY(100%);
+        }
+        nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        nav ul li {
+            flex-basis: 25%;
+            text-align: center;
+        }
+        nav ul li a {
+            display: block;
+            padding: 10px;
+            color: black;
+            background-color: #ffdd57;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        nav ul li a:hover {
+            background-color: #A3C2FF;
+        }
+        nav ul li a i {
+            display: block;
+            font-size: 20px;
+        }
+        main {
+            padding: 20px;
+            padding-bottom: 140px; /* Space for the fixed navbar */
+        }
+        section {
+            margin-bottom: 20px;
+        }
+        .menu-toggle {
+            position: fixed;
+            top: 10px;
+            left: 5px;
+            background-color: #ffdd57;
+            color: black;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1060; /* Ensure the button is above other elements */
+            cursor: pointer;
+        }
+        .container {
+            width: 30%;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <button class="menu-toggle" onclick="toggleMenu()">
+        <i id="menu-icon" class="bi bi-list"></i>
+    </button>
+    <nav id="navbar" class="hidden">
+        <ul>
+            <li><a href="{% url 'user-detail' %}"><b><i class="bi bi-person"></i><span>Профиль</span></b></a></li>
+            <li><a href="{% url 'user-inventory' %}"><b><i class="bi bi-box"></i><span>Инвентарь</span></b></a></li>
+            <li><a href="{% url 'shop' %}"><b><i class="bi bi-shop"></i><span>Магазин</span></b></a></li>
+            <li><a href="{% url 'user-collection' %}"><b><i class="bi bi-collection"></i><span>Коллекция</span></b></a></li>
+            <li><a href="{% url 'user-deck' %}"><b><i class="bi bi-layout-text-sidebar-reverse"></i><span>Колода</span></b></a></li>
+            <li><a href="{% url 'arena' %}"><b><i class="bi bi-caret-right-square-fill"></i><span>Арена</span></b></a></li>
+            <li><a href="{% url 'db' %}"><b><i class="bi bi-kanban"></i><span>Об игре</span></b></a></li>
+            <li><a href="{% url 'quest' %}"><b><i class="bi bi-exclamation-square"></i><span>Квесты</span></b></a></li>
+            <li><a href="{% url 'help' %}"><b><i class="bi bi-question-circle-fill"></i><span>Помощь</span></b></a></li>
+        </ul>
+    </nav>
+
+        {% block content %}
+        <!-- Content will be injected here -->
+        {% endblock %}
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function toggleMenu() {
+            var navbar = document.getElementById('navbar');
+            var menuIcon = document.getElementById('menu-icon');
+            if (navbar.classList.contains('hidden')) {
+                navbar.classList.remove('hidden');
+                menuIcon.classList.remove('bi-list');
+                menuIcon.classList.add('bi-x');
+            } else {
+                navbar.classList.add('hidden');
+                menuIcon.classList.remove('bi-x');
+                menuIcon.classList.add('bi-list');
+            }
+        }
+    </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

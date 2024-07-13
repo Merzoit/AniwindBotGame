@@ -1,0 +1,83 @@
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    body {
+        background: url("https://s3.timeweb.cloud/210a85b8-2790aa0e-77e8-4b85-92e6-2676c2ee4708/ui/arena.png") no-repeat center center fixed;
+        background-size: cover;
+        height: 100vh;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .container {
+        width: 100%;
+        max-width: 1200px;
+        height: 100vh;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        overflow-y: auto;
+        color: white;
+    }
+    .container p {
+        text-align: center;
+        color: #ffdd57;
+        margin-bottom: 20px;
+    }
+    .container h4 {
+        text-align: center;
+        color: #ffdd57;
+    }
+    .aw-button {
+        width: 100%;
+        padding: 15px;
+        margin-bottom: 20px;
+        background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+        border: none;
+        color: #ffdd57;
+        font-weight: bold;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+</style>
+<script>
+    setInterval(function() {
+        window.location.reload();
+    }, 3000);
+</script>
+<div class="container">
+    {% if fight_data %}
+    <p>*****</p>
+    <p>Пока вы не завершите активный матч, он будет продолжать находиться в активном статусе. </p>
+    <p>*****</p>
+    <h4><b>Активный матч</b></h4>
+    <p>
+        Легендарная битва<br>
+        {{ fight_data.user_first.statistic.username }} <b>VS</b> {{ fight_data.user_second.statistic.username }}<br><br>
+        {{ fight_data.user_first.deck.first_card.card.name }} <--> {{ fight_data.user_second.deck.first_card.card.name }}<br>
+        {{ fight_data.user_first.deck.second_card.card.name }} <--> {{ fight_data.user_second.deck.second_card.card.name }}<br>
+        {{ fight_data.user_first.deck.third_card.card.name }} <--> {{ fight_data.user_second.deck.third_card.card.name }}
+    </p>
+    <p>*****</p>
+    <a href="https://aniwind.ru/fight?{{fight_data.0.id}}" class="btn aw-button">Вступить</a>
+    {% else %}
+    <p>*****</p>
+    <p>
+        Пока вы не завершите активный матч, он будет продолжать находиться в активном статусе.<br>
+        *<br>
+        Чтобы покинуть очередь - нажмите "Отменить"<br>
+        *<br>
+        <b>Время ожидания: 1 - 10 секунд(ы).</b>
+    </p>
+    <p>*****</p>
+    <p><b>Идёт поиск соперника..</b></p>
+    <form method="POST" action="{% url 'remove_from_queue' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn aw-button">Отменить</button>
+    </form>
+    {% endif %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

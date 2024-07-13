@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Game App{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("https://s3.timeweb.cloud/210a85b8-2790aa0e-77e8-4b85-92e6-2676c2ee4708/ui/bg.jpg");
+            color: #ecf0f1;
+        }
+        nav {
+            background-color: #34495e;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            border-top: 2px solid #e74c3c;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        nav.hidden {
+            transform: translateY(100%);
+        }
+        nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        nav ul li {
+            flex-basis: 25%;
+            text-align: center;
+        }
+        nav ul li a {
+            display: block;
+            padding: 10px;
+            color: #ecf0f1;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        nav ul li a:hover {
+            background-color: #e74c3c;
+        }
+        nav ul li a i {
+            display: block;
+            font-size: 20px;
+        }
+        main {
+            padding: 20px;
+            padding-bottom: 140px; /* Space for the fixed navbar */
+        }
+        section {
+            margin-bottom: 20px;
+        }
+        .menu-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #e74c3c;
+            color: #ecf0f1;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Ensure the button is above other elements */
+            cursor: pointer;
+        }
+        .container {
+            width: 100%;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleMenu()">
+    <i id="menu-icon" class="bi bi-list"></i>
+</button>
+<nav id="navbar">
+    <ul>
+        <li><a href="{% url 'user-detail' %}"><i class="bi bi-person"></i><span>Профиль</span></a></li>
+        <li><a href="{% url 'user-inventory' %}"><i class="bi bi-box"></i><span>Инвентарь</span></a></li>
+        <li><a href="{% url 'shop' %}"><i class="bi bi-shop"></i><span>Магазин</span></a></li>
+        <li><a href="{% url 'user-collection' %}"><i class="bi bi-collection"></i><span>Коллекция</span></a></li>
+        <li><a href="{% url 'user-deck' %}"><i class="bi bi-layout-text-sidebar-reverse"></i><span>Колода</span></a></li>
+        <li><a href="{% url 'arena' %}"><i class="bi bi-caret-right-square-fill"></i><span>Арена</span></a></li>
+        <li><a href="{% url 'rating' %}"><i class="bi bi-bar-chart-line"></i><span>Рейтинг</span></a></li>
+        <li><a href="{% url 'help' %}"><i class="bi bi-question-circle-fill"></i><span>Помощь</span></a></li>
+    </ul>
+</nav>
+<main class="container">
+    {% block content %}
+    <!-- Content will be injected here -->
+    {% endblock %}
+</main>
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function toggleMenu() {
+        var navbar = document.getElementById('navbar');
+        var menuIcon = document.getElementById('menu-icon');
+        if (navbar.classList.contains('hidden')) {
+            navbar.classList.remove('hidden');
+            menuIcon.classList.remove('bi-x');
+            menuIcon.classList.add('bi-list');
+        } else {
+            navbar.classList.add('hidden');
+            menuIcon.classList.remove('bi-list');
+            menuIcon.classList.add('bi-x');
+        }
+    }
+</script>
+</body>
+</html>

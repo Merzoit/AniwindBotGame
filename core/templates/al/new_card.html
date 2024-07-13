@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    body {
+        background: url("https://s3.timeweb.cloud/210a85b8-2790aa0e-77e8-4b85-92e6-2676c2ee4708/ui/details.png") no-repeat center center fixed;
+        background-size: cover;
+        height: 100vh;
+        overflow: auto;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .container {
+        max-width: 800px;
+        width: 100%;
+        margin: auto;
+        background-color: rgba(0, 0, 0, 0.75);
+        border-radius: 10px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        color: white;
+    }
+    .card-details {
+        background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+        border-left: 5px solid #ffdd57;
+        margin: 20px 0;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+    .card-details p {
+        margin: 0;
+        font-size: 16px;
+        line-height: 1.6;
+        color: bisque;
+    }
+    .card-details p:first-child {
+        margin-top: 0;
+    }
+    .card-details p:last-child {
+        margin-bottom: 0;
+    }
+    .card-image {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .card-image img {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+    .filterBtn {
+        width: 100%;
+        margin-bottom: 5px;
+        border: 1px solid white;
+        background-color: #ffdd57;
+        color: black;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    .filterBtn:hover {
+        background-color: #ffcc00;
+        transform: scale(1.05);
+    }
+</style>
+
+<div class="container">
+    {% if card_id %}
+        <div class="card-details">
+            <a href="../../user/inventory/" type="button" class="btn-close" style="background-color: #ffdd57; float: right; margin-bottom: 10px;"></a>
+            {% if card %}
+                <div class="card-image">
+                    <img src="{{ card.card.url }}" alt="Image of {{ card.card.name }}">
+                </div>
+                <p><strong>Имя:</strong> {{ card.card.name }}</p>
+                <p><strong>Элемент:</strong> {{ card.card.element.name }}</p>
+                <p><strong>Способность:</strong> {{ card.card.ability.name }}</p>
+                <p><strong>Сезон:</strong> {{ card.card.season.id }}</p>
+                <p><strong>Вселенная:</strong> {{ card.card.universe.name }}</p>
+                <p><strong>Здоровье:</strong> {{ card.hp }}</p>
+                <p><strong>Атака:</strong> {{ card.str }}</p>
+                <p><strong>Предельные показатели здоровья:</strong> {{ card.card.hp_min }} - {{ card.card.hp_max }}</p>
+                <p><strong>Предельные показатели атаки:</strong> {{ card.card.str_min }} - {{ card.card.str_max }}</p>
+                <form action="{% url 'card-sell' red='Инвентарь' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="card" value="{{ card.id }}">
+                    <button type="submit" class="btn filterBtn">Продать</button>
+                </form>
+            {% else %}
+                <p>No card found with the given ID.</p>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>No Card ID provided.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

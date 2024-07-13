@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+
+{% block title %}Магазин{% endblock %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    body {
+        background: url("https://s3.timeweb.cloud/210a85b8-2790aa0e-77e8-4b85-92e6-2676c2ee4708/ui/shop.png") no-repeat center center fixed;
+        background-size: cover;
+        height: 100vh;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        width: 100%;
+        height: 100vh;
+        padding-top: 20px;
+        margin: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+        border-radius: 10px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        overflow-y: auto;
+        color: #ffdd57;
+    }
+    .container h2 {
+        text-align: center;
+        color: #ffdd57;
+        margin-bottom: 20px;
+        font-size: 2em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    .shop-table {
+        width: 100%;
+        margin-top: 20px;
+        color: #ffdd57;
+    }
+    .shop-table th, .shop-table td {
+        vertical-align: middle;
+        color: #ffdd57;
+        padding: 12px 15px;
+        border-bottom: 1px solid #404040;
+    }
+    .shop-table th {
+        color: #ffdd57;
+        background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+        border: none;
+    }
+    .shop-table img {
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+    .modal-body img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+    .modal-body p {
+        text-align: center;
+        color: #ffdd57;;
+    }
+    .modal-content {
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.75);
+        color: #ffdd57;;
+        border-radius: 10px;
+        padding: 20px;
+    }
+    .carousel-item img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+    .carousel-caption {
+        background-color: rgba(255, 255, 255, 0.8);
+        color: black;;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    .btn-success {
+        width: 100%;
+        font-size: 16px;
+        padding: 10px;
+        background-color: #28a745;
+        border: none;
+        color: #ffdd57;
+        font-weight: bold;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    .btn-success:hover {
+        background-color: #218838;
+        transform: scale(1.05);
+    }
+    .messages {
+        position: fixed;
+        text-align: center;
+        z-index: 1050; /* Выше, чем большинство элементов на странице */
+        width: 100%;
+
+    }
+
+    .alert {
+        opacity: 0.9;
+        margin-bottom: 5px;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        transition: opacity 0.5s linear;
+    }
+
+    .success {
+        background-color: #d4edda;
+        color: #155724;
+        border-color: #c3e6cb;
+    }
+
+    .error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border-color: #f5c6cb;
+    }
+
+    .warning {
+        background-color: #fff3cd;
+        color: #856404;
+        border-color: #ffeeba;
+    }
+    @media (max-width: 768px) {
+        .shop-table img {
+            height: 75px;
+        }
+        .shop-table th, .shop-table td {
+            font-size: 14px;
+        }
+        .modal-dialog {
+            margin: 10px;
+        }
+    }
+    @media (max-width: 576px) {
+        .shop-table img {
+            height: 50px;
+        }
+        .shop-table th, .shop-table td {
+            font-size: 12px;
+        }
+        .modal-dialog {
+            margin: 5px;
+        }
+        .carousel-caption {
+            font-size: 12px;
+            padding: 5px;
+        }
+
+    }
+</style>
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div class="{% if message.tags %}alert {{ message.tags }}{% endif %}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+<div class="container">
+    <h2><i class="bi bi-shop"></i> Магазин <i class="bi bi-shop"></i></h2>
+    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="https://s3.timeweb.cloud/210a85b8-2790aa0e-77e8-4b85-92e6-2676c2ee4708/ui/sale/1.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="https://s3.timeweb.cloud/210a85b8-2790aa0e-77e8-4b85-92e6-2676c2ee4708/ui/sale/2.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="https://s3.timeweb.cloud/210a85b8-2790aa0e-77e8-4b85-92e6-2676c2ee4708/ui/sale/3.jpg" class="d-block w-100" alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <br>
+    <div style="text-align: center; color: #ffdd57; background: linear-gradient(145deg, #2a2a2a, #1e1e1e);">
+        <b>Аникоин: {{ user.inventory.gold }}<br>Алмазы: {{ user.inventory.diamond }}<br>Скальпы: {{ user.inventory.scalp }}</b><br>
+        <i class="bi bi-coin"></i> - стоимость предмета <br>
+        <i class="bi bi-eye-fill"></i> - валюта <br>
+
+    </div>
+    <table class="table shop-table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Название</th>
+                <th><i class="bi bi-coin"></i></th>
+                <th><i class="bi bi-eye-fill"></i></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr data-bs-toggle="modal" data-bs-target="#modal{{ item.id }}" style="background: linear-gradient(145deg, #2a2a2a, #1e1e1e);">
+                <td><img src="{{ item.item.url }}" alt="{{ item.item.name }}"></td>
+                <td>{{ item.item.name }}</td>
+                <td>{{ item.item.buy_price }}</td>
+                <td>{{ item.vault }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Модальные окна -->
+{% for item in items %}
+<div class="modal fade" id="modal{{ item.id }}" tabindex="-1" aria-labelledby="modalLabel{{ item.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background: linear-gradient(145deg, #2a2a2a, #1e1e1e);">
+                <h5 class="modal-title" id="modalLabel{{ item.id }}" style="color: #ffdd57;">{{ item.item.name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="background-color: #ffdd57"></button>
+            </div>
+            <div class="modal-body">
+                <img src="{{ item.item.url }}" alt="{{ item.item.name }}">
+                <i>
+                    Открыв {{ item.item.name }} вы получите одну случайную карту.<br>
+                    Показатели карты так же будут подобранны случайным образом.
+                </i>
+                <p>
+                    <b>Стоимость: {{ item.item.buy_price }}</b><br>
+                </p>
+                <form action="{% url 'purchase-item' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="item_id" value="{{ item.item.id }}">
+                    <button type="submit" class="btn" style="background: linear-gradient(145deg, #2a2a2a, #1e1e1e); color: #ffdd57">Купить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        // Находим все элементы с классом alert
+        const alerts = document.querySelectorAll('.alert');
+        // Задаем таймер для каждого сообщения
+        alerts.forEach(function(alert) {
+            setTimeout(function() {
+                // Плавно уменьшаем прозрачность, затем удаляем элемент
+                alert.style.opacity = '0';
+                setTimeout(function() {
+                    alert.remove();
+                }, 600); // Синхронизируем это с transition в CSS
+            }, 5000); // Исчезновение сообщений через 5 секунд
+        });
+    });
+</script>
+{% endblock %}
+

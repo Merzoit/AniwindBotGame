@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Бой{% endblock %}
+
+{% block content %}
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+    }
+    #unitIframe {
+        width: 100%;    /* ширина на всю ширину окна просмотра */
+        height: 100%;   /* высота на всю высоту окна просмотра */
+        border: none; /* удалить рамку, если она есть */
+    }
+    .container {
+        margin: auto;
+        width: 100vw;
+        height: 100vh;
+    }
+</style>
+<div class="container">
+    <iframe id="unitIframe" src="{{ game_url }}" scrolling="no"></iframe>
+</div>
+
+{% endblock %}

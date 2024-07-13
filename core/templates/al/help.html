@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}FAQ по игре Aniwind{% endblock %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    body {
+        background: url("https://s3.timeweb.cloud/210a85b8-2790aa0e-77e8-4b85-92e6-2676c2ee4708/ui/help.png") no-repeat center center fixed;
+        background-size: cover;
+        height: 100vh;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .container {
+        width: 100%;
+        max-width: 1200px;
+        height: 100vh;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        overflow-y: auto;
+        color: white;
+    }
+    .container h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #ffdd57;
+        font-size: 2em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    .faq-section {
+        margin-bottom: 20px;
+    }
+    .faq-section h2 {
+        color: #ffdd57;
+        margin-bottom: 10px;
+        font-size: 1.5em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    .faq-section p, .faq-section li {
+        font-size: 1.2em;
+        color: bisque;
+    }
+    .faq-section ul {
+        list-style-type: none;
+        padding-left: 0;
+    }
+    .faq-section li {
+        margin-bottom: 10px;
+    }
+    @media (max-width: 768px) {
+        .faq-section p, .faq-section li {
+            font-size: 1em;
+        }
+    }
+</style>
+
+<div class="container">
+    <h1><i class="bi bi-info-circle"></i> FAQ <i class="bi bi-info-circle"></i></h1>
+
+    <div class="faq-section">
+        <h2>Как играть?</h2>
+        <ul>
+            <li><strong>Правила игры:</strong></li>
+            <ul>
+                <li><strong>Раунды и карты:</strong> Игра состоит из 3 раундов. У каждого игрока в начале игры есть 3 карты.</li>
+                <li><strong>Механика боя:</strong> Карты дерутся друг с другом по очереди в каждом раунде применя свои способности с определённым шансом.</li>
+                <li><strong>Победа:</strong> Победителем становится тот игрок, чьи карты победят в 2 из 3 раундов.</li>
+            </ul>
+        </ul>
+    </div>
+
+    <div class="faq-section">
+        <h2>Для новичков:</h2>
+        <ul>
+            <li><strong>Стартовый капитал:</strong> Каждому новому игроку мы выдаем 700 аникоинов.</li>
+            <li><strong>Первые шаги:</strong></li>
+            <ul>
+                <li>Зайдите в магазин и приобретите минимум 3 бокса.</li>
+                <li>В инвентаре откройте купленные боксы, чтобы получить 3 игровые карты. Хакрактеристики карты будут подобраны случайным образом в том диапазоне, которым владеет карточка.</li>
+                <li>Перейдите в меню "Колода" и добавьте новые карты в свою колоду. Учтите, что порядок карт в колоде определяет их очередность в бою.</li>
+                <li>Теперь вы готовы вступить в бой! Перейдите на арену и начните сражение.</li>
+            </ul>
+        </ul>
+    </div>
+
+    <div class="faq-section">
+        <h2>Как заработать аникоины?</h2>
+        <ul>
+            <li><strong>Заработок:</strong> За каждую победу на арене вы зарабатываете 10 аникоинов. Используйте их для покупки новых карт и улучшений, а так же следите за <a href="https://t.me/+EFBCByOqlZI5MWIy">новостями в нашей группе</a> и получайте бонусы и аникоины.</li>
+        </ul>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
